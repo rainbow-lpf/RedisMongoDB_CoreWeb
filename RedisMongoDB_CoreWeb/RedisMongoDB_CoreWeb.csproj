@@ -222,10 +222,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helper\MongoDB.cs" />
-    <Compile Include="Helper\MongoDB_Helper.cs" />
     <Compile Include="Helper\Mongo_Helper.cs" />
-    <Compile Include="Helper\Mon_Helper.cs" />
     <Compile Include="Helper\Redis_Helper.cs" />
     <Compile Include="Helper\SQL_Helper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />

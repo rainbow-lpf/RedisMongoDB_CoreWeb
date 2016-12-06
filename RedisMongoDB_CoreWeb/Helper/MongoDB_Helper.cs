@@ -39,16 +39,16 @@ namespace RedisMongoDB_CoreWeb.Helper
         /// <param name="collectionName">指定插入的集合</param>
         public void Insert<T>(T t, string collectionName)
         {
-            MongoCollection<BsonDocument> mc = this._db.GetCollection<BsonDocument>(collectionName);
+            var mc = this._db.GetCollection<BsonDocument>(collectionName);
 
             //将实体转换为bson文档
             BsonDocument bd = t.ToBsonDocument();
 
             //进行插入操作
             WriteConcernResult result = mc.Insert(bd);
-            if (!string.IsNullOrEmpty(result.ErrorMessage))
+            if (!string.IsNullOrEmpty(result.LastErrorMessage))
             {
-                throw new Exception(result.ErrorMessage);
+                throw new Exception(result.LastErrorMessage);
             }
 
         }
@@ -61,7 +61,7 @@ namespace RedisMongoDB_CoreWeb.Helper
         /// <param name="collectionName">指定要插入的集合</param>
         public void Insert<T>(List<T> list, string collectionName)
         {
-            MongoCollection<BsonDocument> mc = this._db.GetCollection<BsonDocument>(collectionName);
+            var mc = this._db.GetCollection<BsonDocument>(collectionName);
 
             //创建一个空间bson集合
             List<BsonDocument> bsonList = new List<BsonDocument>();
@@ -80,7 +80,7 @@ namespace RedisMongoDB_CoreWeb.Helper
         /// <param name="collectionName">指定的集合名词</param>
         public void Remove<T>(IMongoQuery query, string collectionName)
         {
-            MongoCollection<T> mc = this._db.GetCollection<T>(collectionName);
+            var mc = this._db.GetCollection<T>(collectionName);
 
             query = this.InitQuery(query);
             //根据指定查询移除数据
@@ -104,9 +104,9 @@ namespace RedisMongoDB_CoreWeb.Helper
         /// <returns>返回一个List列表</returns>
         public List<T> FindAll<T>(string collectionName)
         {
-            MongoCollection<T> mc = this._db.GetCollection<T>(collectionName);
+            var mc = this._db.GetCollection<T>(collectionName);
             //以实体方式取出其数据集合
-            MongoCursor<T> mongoCursor = mc.FindAll();
+            var mongoCursor = mc.FindAll();
             //直接转化为List返回
             return mongoCursor.ToList<T>();
         }
@@ -122,9 +122,9 @@ namespace RedisMongoDB_CoreWeb.Helper
         /// <returns></returns>
         public List<T> FindAll<T>(string collectionName, FieldsDocument fd)
         {
-            MongoCollection<T> mc = this._db.GetCollection<T>(collectionName);
+            var mc = this._db.GetCollection<T>(collectionName);
             //以实体方式取出其数据集合
-            MongoCursor<T> mongoCursor = mc.FindAll().SetFields(fd);
+            var mongoCursor = mc.FindAll().SetFields(fd);
             //直接转化为List返回
             return mongoCursor.ToList<T>();
         }
@@ -169,8 +169,8 @@ namespace RedisMongoDB_CoreWeb.Helper
         public void Update<T>(IMongoQuery query, BsonDocument bd, string collectionName)
         {
 
-            MongoCollection<T> mc = this._db.GetCollection<T>(collectionName);
-            query = this.InitQuery(query);
+            var mc = this._db.GetCollection<T>(collectionName);
+            query = this.Update(query);
 
             mc.Update(query, new UpdateDocument(bd));
         }
